@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BinerQuest 4-Bit - Game & Sertifikat Interaktif</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Fira+Code:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                        serif: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#080C14',
+                            card: '#0F172A',
+                            cardBorder: '#1E293B',
+                            gold: '#F59E0B',
+                            goldLight: '#FCD34D',
+                            accent: '#06B6D4',
+                            emerald: '#10B981',
+                            rose: '#F43F5E'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations & Glow Effects */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.92); opacity: 0.8; }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 25px -4px rgba(6, 182, 212, 0.45);
+        }
+        .glow-gold {
+            box-shadow: 0 0 30px -2px rgba(245, 158, 11, 0.4);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -4px rgba(16, 185, 129, 0.55);
+        }
+        .glow-rose {
+            box-shadow: 0 0 25px -4px rgba(244, 63, 94, 0.55);
+        }
+
+        /* Certificate Ornament Border Pattern */
+        .cert-border {
+            border: 8px double #d97706;
+            outline: 2px solid #78350f;
+            outline-offset: -12px;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080C14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 9999px;
+        }
+
+        /* ========================================================
+           PRINT CSS STYLES (Clean PDF/Print Output)
+           ======================================================== */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            /* Hide all UI elements except certificate print area */
+            header, footer, #screen-start, #screen-game, #screen-summary, #modal-help, .no-print {
+                display: none !important;
+            }
+
+            #modal-certificate {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                background: #ffffff !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            #cert-card {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                border: 6px double #b45309 !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                page-break-inside: avoid;
+            }
+
+            .cert-gold-text {
+                color: #b45309 !important;
+            }
+
+            .cert-bg-subtle {
+                background-color: #f8fafc !important;
+                border-color: #cbd5e1 !important;
+            }
+
+            .cert-signature-line {
+                border-color: #475569 !important;
+            }
+            
+            @page {
+                size: A4 landscape;
+                margin: 1cm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-100 min-h-screen font-sans flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950 overflow-x-hidden">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="w-full border-b border-slate-800/80 bg-brand-card/80 backdrop-blur-md sticky top-0 z-30 no-print">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="goToStartScreen()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-slate-950 font-mono font-extrabold text-lg">
+                    01
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-wide bg-gradient-to-r from-cyan-400 via-emerald-400 to-amber-300 bg-clip-text text-transparent">
+                        BinerQuest 4-Bit
+                    </h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">Kuis Biner & Sertifikat Kelulusan</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <!-- Sound Toggle Button -->
+                <button id="btn-sound" onclick="toggleSound()" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 transition-all flex items-center justify-center w-10 h-10" title="Suara">
+                    <i id="sound-icon" class="fa-solid fa-volume-high text-cyan-400"></i>
+                </button>
+                <!-- Help Modal Trigger -->
+                <button onclick="toggleModal('modal-help', true)" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 transition-all flex items-center justify-center w-10 h-10" title="Petunjuk & Konsep">
+                    <i class="fa-solid fa-circle-question text-cyan-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="max-w-4xl w-full mx-auto px-4 py-6 flex-grow flex flex-col items-center justify-center">
+
+        <!-- ======================================================== -->
+        <!-- SCREEN 1: START SCREEN (MENU & PLAYER CONFIG) -->
+        <!-- ======================================================== -->
+        <div id="screen-start" class="w-full max-w-lg space-y-5 animate-pop">
+            
+            <div class="text-center space-y-2">
+                <span class="inline-block px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold rounded-full uppercase tracking-wider">
+                    <i class="fa-solid fa-award mr-1"></i> Tantangan Sertifikasi Digital
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-100">Uji Kecepatan Biner</h2>
+                <p class="text-sm text-slate-400 max-w-md mx-auto">
+                    Selesaikan <strong class="text-cyan-400">15 soal acak</strong> tanpa nilai tempat untuk memperoleh sertifikat resmi!
+                </p>
+            </div>
+
+            <!-- Start Configuration Card -->
+            <div class="bg-brand-card border border-brand-cardBorder rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5">
+                
+                <!-- Player Name Input -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
+                        <i class="fa-solid fa-user-pen text-amber-400"></i>
+                        <span>Nama Pemain (Untuk Sertifikat)</span>
+                    </label>
+                    <input type="text" id="player-name-input" placeholder="Masukkan nama Anda..." value="Pejuang Biner"
+                        class="w-full bg-slate-950 border-2 border-slate-800 focus:border-cyan-400 rounded-2xl px-4 py-3 text-slate-100 font-bold placeholder-slate-600 outline-none transition-all text-sm">
+                </div>
+
+                <!-- Mode Selection -->
+                <div class="space-y-2">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pilih Mode Permainan</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <!-- Mode 1 -->
+                        <button id="mode-btn-bin2dec" onclick="selectMode('bin2dec')" class="mode-select-btn p-3.5 rounded-2xl border-2 border-cyan-500 bg-slate-900 text-left transition-all duration-200 relative glow-cyan">
+                            <div class="text-cyan-400 text-base mb-1"><i class="fa-solid fa-calculator"></i></div>
+                            <div class="font-bold text-xs text-slate-100">Biner ➔ Desimal</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">Teleportasi 0101 ke desimal</div>
+                        </button>
+
+                        <!-- Mode 2 -->
+                        <button id="mode-btn-dec2bin" onclick="selectMode('dec2bin')" class="mode-select-btn p-3.5 rounded-2xl border-2 border-slate-800 bg-slate-950/60 text-left transition-all duration-200 hover:border-slate-700 relative">
+                            <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-toggle-on"></i></div>
+                            <div class="font-bold text-xs text-slate-100">Desimal ➔ Biner</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">Set saklar bit 4-bit</div>
+                        </button>
+
+                        <!-- Mode 3 (Mixed) -->
+                        <button id="mode-btn-mixed" onclick="selectMode('mixed')" class="mode-select-btn p-3.5 rounded-2xl border-2 border-slate-800 bg-slate-950/60 text-left transition-all duration-200 hover:border-slate-700 relative">
+                            <div class="text-amber-400 text-base mb-1"><i class="fa-solid fa-shuffle"></i></div>
+                            <div class="font-bold text-xs text-slate-100">Mode Campuran</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">Kombinasi acak interaktif</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Timer Selection -->
+                <div class="pt-2 border-t border-slate-800/80 space-y-2">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Batas Waktu per Soal</h3>
+                    <div class="flex justify-center space-x-2">
+                        <button id="timer-btn-5" onclick="selectTimerLimit(5)" class="timer-select-btn px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-300 hover:border-slate-700 transition-all">5 Detik 🔥</button>
+                        <button id="timer-btn-10" onclick="selectTimerLimit(10)" class="timer-select-btn px-3.5 py-2 rounded-xl border-2 border-cyan-500 bg-slate-900 text-xs font-bold text-cyan-400 transition-all">10 Detik ⏱️</button>
+                        <button id="timer-btn-15" onclick="selectTimerLimit(15)" class="timer-select-btn px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-300 hover:border-slate-700 transition-all">15 Detik 🧘</button>
+                    </div>
+                </div>
+
+                <!-- Start Button -->
+                <button onclick="startSession()" class="w-full py-4 bg-gradient-to-r from-cyan-500 via-emerald-400 to-amber-400 hover:opacity-95 text-slate-950 font-extrabold rounded-2xl shadow-lg shadow-cyan-500/20 text-base tracking-wide active:scale-[0.98] transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-play text-lg"></i>
+                    <span>Mulai Kuis (15 Soal)</span>
+                </button>
+            </div>
+
+            <!-- Stats Highlight -->
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3.5 flex justify-around text-center text-xs">
+                <div>
+                    <span class="text-slate-500 uppercase font-semibold text-[10px] block">Skor Rekor</span>
+                    <span id="start-high-score" class="text-base font-bold font-mono text-cyan-400">0</span>
+                </div>
+                <div class="border-r border-slate-800"></div>
+                <div>
+                    <span class="text-slate-500 uppercase font-semibold text-[10px] block">Combo Rekor</span>
+                    <span id="start-high-streak" class="text-base font-bold font-mono text-amber-400">0</span>
+                </div>
+                <div class="border-r border-slate-800"></div>
+                <div>
+                    <span class="text-slate-500 uppercase font-semibold text-[10px] block">Sesi Selesai</span>
+                    <span id="start-sessions-played" class="text-base font-bold font-mono text-slate-200">0</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SCREEN 2: GAMEPLAY SCREEN -->
+        <!-- ======================================================== -->
+        <div id="screen-game" class="w-full max-w-md space-y-4 hidden">
+            
+            <!-- HEADER STATS BAR -->
+            <div class="grid grid-cols-3 gap-2 bg-brand-card border border-brand-cardBorder rounded-2xl p-3 text-center shadow-lg">
+                <!-- Question Counter -->
+                <div>
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase block">Soal</span>
+                    <span class="text-lg font-black text-slate-100 font-mono">
+                        <span id="game-q-num" class="text-cyan-400">1</span><span class="text-slate-500 text-xs">/15</span>
+                    </span>
+                </div>
+                <!-- Score -->
+                <div class="border-x border-slate-800/80">
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase block">Skor</span>
+                    <span id="game-score" class="text-lg font-black text-emerald-400 font-mono">0</span>
+                </div>
+                <!-- Streak -->
+                <div>
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase block">Streak</span>
+                    <div class="flex items-center justify-center space-x-1">
+                        <i class="fa-solid fa-fire text-amber-500 text-xs"></i>
+                        <span id="game-streak" class="text-lg font-black text-amber-400 font-mono">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COUNTDOWN TIMER BAR -->
+            <div class="bg-brand-card border border-brand-cardBorder rounded-2xl p-3 shadow-lg space-y-1.5">
+                <div class="flex justify-between items-center text-xs font-mono">
+                    <span class="text-slate-400 font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-stopwatch text-cyan-400"></i>
+                        <span id="mode-badge-label" class="text-[11px] text-slate-300 font-sans">Biner ➔ Desimal</span>
+                    </span>
+                    <span id="timer-text" class="font-extrabold text-sm text-cyan-400">10.0s</span>
+                </div>
+                <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div id="timer-progress-bar" class="h-full bg-cyan-400 transition-all duration-75 ease-linear w-full"></div>
+                </div>
+            </div>
+
+            <!-- PUZZLE CONTAINER CARD -->
+            <div id="game-card" class="bg-brand-card border border-brand-cardBorder rounded-3xl p-5 sm:p-6 shadow-2xl relative transition-all duration-300 space-y-5">
+                
+                <!-- TYPE A: BINER KE DESIMAL -->
+                <div id="puzzle-bin2dec" class="space-y-4">
+                    <div class="text-center">
+                        <p class="text-xs uppercase tracking-widest text-slate-400 font-semibold">Ubah Biner Ini Ke Desimal:</p>
+                        
+                        <!-- 4-Bit Display (STRICTLY NO PLACE VALUE HELPERS) -->
+                        <div id="binary-display-boxes" class="flex justify-center items-center space-x-2 sm:space-x-3 my-4">
+                            <div class="bit-box w-14 h-20 sm:w-16 sm:h-22 bg-slate-950 border-2 border-slate-700/80 rounded-2xl flex items-center justify-center text-3xl font-bold font-mono text-cyan-400 shadow-inner">0</div>
+                            <div class="bit-box w-14 h-20 sm:w-16 sm:h-22 bg-slate-950 border-2 border-slate-700/80 rounded-2xl flex items-center justify-center text-3xl font-bold font-mono text-cyan-400 shadow-inner">0</div>
+                            <div class="bit-box w-14 h-20 sm:w-16 sm:h-22 bg-slate-950 border-2 border-slate-700/80 rounded-2xl flex items-center justify-center text-3xl font-bold font-mono text-cyan-400 shadow-inner">0</div>
+                            <div class="bit-box w-14 h-20 sm:w-16 sm:h-22 bg-slate-950 border-2 border-slate-700/80 rounded-2xl flex items-center justify-center text-3xl font-bold font-mono text-cyan-400 shadow-inner">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Answer Field -->
+                    <div id="dec-input-display" class="w-full bg-slate-950 border-2 border-slate-700 rounded-2xl py-2.5 px-4 text-center text-2xl font-black font-mono text-emerald-400 tracking-wider shadow-inner min-h-[50px] flex items-center justify-center">
+                        <span class="text-slate-600 font-normal text-sm">Ketik Angka (0-15)</span>
+                    </div>
+
+                    <!-- On-Screen Touch Numpad -->
+                    <div class="grid grid-cols-4 gap-2 pt-1">
+                        <button onclick="pressNumpad('1')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">1</button>
+                        <button onclick="pressNumpad('2')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">2</button>
+                        <button onclick="pressNumpad('3')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">3</button>
+                        <button onclick="pressNumpad('4')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">4</button>
+                        
+                        <button onclick="pressNumpad('5')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">5</button>
+                        <button onclick="pressNumpad('6')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">6</button>
+                        <button onclick="pressNumpad('7')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">7</button>
+                        <button onclick="pressNumpad('8')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">8</button>
+                        
+                        <button onclick="pressNumpad('9')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">9</button>
+                        <button onclick="pressNumpad('0')" class="num-btn py-2.5 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold font-mono text-lg text-slate-100 active:scale-95 transition-all">0</button>
+                        <button onclick="pressNumpad('DEL')" class="py-2.5 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-xl font-semibold text-rose-400 active:scale-95 transition-all flex items-center justify-center" title="Hapus">
+                            <i class="fa-solid fa-backspace"></i>
+                        </button>
+                        <button onclick="submitBin2Dec()" class="py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl font-bold text-sm shadow-lg shadow-emerald-500/20 active:scale-95 transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-right text-base"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TYPE B: DESIMAL KE BINER -->
+                <div id="puzzle-dec2bin" class="space-y-4 hidden">
+                    <div class="text-center">
+                        <p class="text-xs uppercase tracking-widest text-slate-400 font-semibold">Ubah Desimal Ini Ke Biner 4-Bit:</p>
+                        
+                        <!-- Target Decimal Display -->
+                        <div class="my-3">
+                            <span id="target-dec-display" class="inline-block px-8 py-2 bg-slate-950 border-2 border-cyan-500/50 rounded-2xl text-5xl font-black font-mono text-cyan-400 shadow-lg shadow-cyan-500/10">
+                                0
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 4 Bit Toggle Switches (STRICTLY NO PLACE VALUE HELPERS) -->
+                    <div>
+                        <p class="text-[11px] text-center text-slate-400 mb-2 font-medium">Klik kotak untuk ubah <span class="text-slate-200">0</span> / <span class="text-cyan-400">1</span>:</p>
+                        <div class="grid grid-cols-4 gap-2 sm:gap-3">
+                            <button onclick="toggleBit(0)" id="bit-btn-0" class="bit-switch h-20 sm:h-24 bg-slate-950 border-2 border-slate-800 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 group">
+                                <span class="bit-val text-3xl font-extrabold font-mono text-slate-500 group-hover:text-slate-300">0</span>
+                            </button>
+                            <button onclick="toggleBit(1)" id="bit-btn-1" class="bit-switch h-20 sm:h-24 bg-slate-950 border-2 border-slate-800 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 group">
+                                <span class="bit-val text-3xl font-extrabold font-mono text-slate-500 group-hover:text-slate-300">0</span>
+                            </button>
+                            <button onclick="toggleBit(2)" id="bit-btn-2" class="bit-switch h-20 sm:h-24 bg-slate-950 border-2 border-slate-800 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 group">
+                                <span class="bit-val text-3xl font-extrabold font-mono text-slate-500 group-hover:text-slate-300">0</span>
+                            </button>
+                            <button onclick="toggleBit(3)" id="bit-btn-3" class="bit-switch h-20 sm:h-24 bg-slate-950 border-2 border-slate-800 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 group">
+                                <span class="bit-val text-3xl font-extrabold font-mono text-slate-500 group-hover:text-slate-300">0</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button onclick="submitDec2Bin()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-extrabold rounded-2xl shadow-lg shadow-cyan-500/20 active:scale-[0.99] transition-all text-sm tracking-wide flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-check-double text-base"></i>
+                        <span>Cek Jawaban</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- EXPLANATION / FEEDBACK BANNER -->
+            <div id="feedback-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 hidden animate-pop">
+                <div class="flex items-center space-x-2 font-bold text-xs mb-1 text-rose-400" id="feedback-title">
+                    <i class="fa-solid fa-circle-xmark text-sm"></i>
+                    <span>Jawaban Belum Tepat</span>
+                </div>
+                <div id="feedback-text" class="text-xs text-slate-300 font-mono leading-relaxed bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+                    <!-- Dynamic text inserted via JS -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SCREEN 3: SUMMARY & RESULTS SCREEN -->
+        <!-- ======================================================== -->
+        <div id="screen-summary" class="w-full max-w-2xl space-y-6 hidden animate-pop">
+            
+            <!-- Summary Header Card -->
+            <div class="bg-brand-card border border-brand-cardBorder rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-4">
+                
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-cyan-500/20 via-amber-500/20 to-emerald-500/20 border border-amber-500/40 text-amber-400 text-4xl shadow-xl shadow-amber-500/10">
+                    <i id="summary-trophy-icon" class="fa-solid fa-trophy"></i>
+                </div>
+
+                <div>
+                    <span id="summary-badge" class="px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-full uppercase tracking-wider">
+                        Hasil Evaluasi Sesi
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-100 mt-2">Permainan Selesai!</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">Selamat <strong id="summary-player-name" class="text-cyan-400">Pemain</strong>, berikut adalah performa Anda:</p>
+                </div>
+
+                <!-- 4 Metrics Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Total Skor</span>
+                        <span id="sum-score" class="text-2xl font-black font-mono text-emerald-400">0</span>
+                    </div>
+
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Akurasi</span>
+                        <span id="sum-accuracy" class="text-2xl font-black font-mono text-cyan-400">0%</span>
+                        <span id="sum-correct-count" class="text-[10px] text-slate-500 block">0 dari 15</span>
+                    </div>
+
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Rata-rata Waktu</span>
+                        <span id="sum-avg-time" class="text-2xl font-black font-mono text-amber-400">0.0s</span>
+                    </div>
+
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Streak Max</span>
+                        <span id="sum-best-streak" class="text-2xl font-black font-mono text-purple-400">0</span>
+                    </div>
+                </div>
+
+                <!-- Action Button: Open Certificate Modal -->
+                <div class="pt-3">
+                    <button onclick="openCertificateModal()" class="w-full py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:opacity-95 text-slate-950 font-black rounded-2xl shadow-xl shadow-amber-500/20 text-base tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2 border border-amber-300">
+                        <i class="fa-solid fa-award text-xl"></i>
+                        <span>Lihat & Cetak Sertifikat Kelulusan</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Detailed Question Breakdown Table -->
+            <div class="bg-brand-card border border-brand-cardBorder rounded-3xl p-5 shadow-xl space-y-3">
+                <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+                    <span><i class="fa-solid fa-list-check text-cyan-400 mr-2"></i>Rincian 15 Soal</span>
+                    <span class="text-[10px] font-normal text-slate-500">Urutan Soal 1 ➔ 15</span>
+                </h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-500 text-[11px]">
+                                <th class="py-2 px-2">#</th>
+                                <th class="py-2 px-2">Tipe</th>
+                                <th class="py-2 px-2">Soal</th>
+                                <th class="py-2 px-2">Jawaban Kamu</th>
+                                <th class="py-2 px-2">Kunci Jawaban</th>
+                                <th class="py-2 px-2 text-right">Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-table-body" class="divide-y divide-slate-800/60 text-slate-300">
+                            <!-- Dynamic rows generated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="startSession()" class="flex-1 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold rounded-2xl border border-slate-700 active:scale-95 transition-all text-sm flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Main Lagi (Ulangi Mode)</span>
+                </button>
+                <button onclick="goToStartScreen()" class="flex-1 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold rounded-2xl border border-slate-800 active:scale-95 transition-all text-sm flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Menu Utama / Pengaturan</span>
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full py-4 border-t border-slate-800/60 bg-brand-card/30 text-center text-xs text-slate-500 no-print">
+        BinerQuest 4-Bit &bull; Platform Pembelajaran & Sertifikasi Matematika Biner
+    </footer>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 1: OFFICIAL CERTIFICATE OF COMPLETION (PRINTABLE) -->
+    <!-- ======================================================== -->
+    <div id="modal-certificate" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 hidden overflow-y-auto">
+        <div class="max-w-3xl w-full my-auto space-y-4">
+            
+            <!-- Top Certificate Controls Bar (Hidden during printing) -->
+            <div class="flex justify-between items-center bg-slate-900/90 border border-slate-800 p-3 rounded-2xl no-print">
+                <div class="flex items-center space-x-2 text-amber-400 font-bold text-xs sm:text-sm">
+                    <i class="fa-solid fa-certificate text-base"></i>
+                    <span>Preview Sertifikat Resmi</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="printCertificate()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs flex items-center space-x-1.5 shadow-lg shadow-amber-500/20 transition-all">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak / Simpan PDF</span>
+                    </button>
+                    <button onclick="toggleModal('modal-certificate', false)" class="p-2 text-slate-400 hover:text-slate-100 rounded-xl bg-slate-800">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Editable Name Banner before Print (No print) -->
+            <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-2xl flex items-center space-x-3 no-print">
+                <label class="text-xs font-bold text-slate-400 whitespace-nowrap">Ubah Nama Sertifikat:</label>
+                <input type="text" id="cert-name-editor" oninput="updateCertificateName(this.value)" placeholder="Nama Lengkap Pemain" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-amber-300 font-bold w-full outline-none focus:border-amber-400">
+            </div>
+
+            <!-- CERTIFICATE PRINT AREA CARD -->
+            <div id="cert-card" class="bg-slate-950 border-4 border-amber-500/60 rounded-3xl p-6 sm:p-10 relative shadow-2xl text-slate-100 overflow-hidden cert-border">
+                
+                <!-- Background Decorative Watermarks -->
+                <div class="absolute -right-16 -bottom-16 text-slate-900/30 text-[220px] font-mono font-black select-none pointer-events-none">
+                    0101
+                </div>
+                <div class="absolute -left-12 -top-12 text-slate-900/20 text-[180px] font-mono font-black select-none pointer-events-none">
+                    1100
+                </div>
+
+                <!-- Certificate Content Header -->
+                <div class="relative z-10 text-center space-y-3">
+                    
+                    <div class="inline-flex items-center space-x-2 text-amber-400 uppercase tracking-widest text-xs font-extrabold px-4 py-1 rounded-full bg-amber-500/10 border border-amber-500/30">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Akademi Digital BinerQuest</span>
+                    </div>
+
+                    <h1 class="font-serif text-2xl sm:text-4xl font-extrabold tracking-wider text-amber-300 uppercase cert-gold-text">
+                        Sertifikat Kelulusan
+                    </h1>
+                    
+                    <p class="text-slate-400 text-xs sm:text-sm font-sans tracking-wide">
+                        Diberikan secara resmi sebagai penghargaan atas pencapaian kognitif & konversi biner presisi tinggi kepada:
+                    </p>
+
+                    <!-- Player Name Display -->
+                    <div class="py-2 border-b-2 border-amber-500/40 max-w-lg mx-auto my-2">
+                        <h2 id="cert-display-name" class="font-serif text-2xl sm:text-3xl font-extrabold text-cyan-300 tracking-wide">
+                            Pejuang Biner
+                        </h2>
+                    </div>
+
+                    <p class="text-slate-300 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+                        Telah berhasil menyelesaikan <strong class="text-slate-100">15 Soal Matematika Biner 4-Bit</strong> tanpa bantuan indikator nilai tempat dengan hasil evaluasi sebagai berikut:
+                    </p>
+
+                    <!-- Parameter Breakdown Badge Box -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-2xl mx-auto py-3 text-left font-mono">
+                        
+                        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 cert-bg-subtle">
+                            <span class="text-[9px] text-slate-400 uppercase block font-sans font-bold">Mode Game</span>
+                            <span id="cert-mode-val" class="text-xs font-bold text-amber-400">Biner ➔ Desimal</span>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 cert-bg-subtle">
+                            <span class="text-[9px] text-slate-400 uppercase block font-sans font-bold">Batas Waktu/Soal</span>
+                            <span id="cert-timer-val" class="text-xs font-bold text-cyan-400">10 Detik</span>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 cert-bg-subtle">
+                            <span class="text-[9px] text-slate-400 uppercase block font-sans font-bold">Skor & Akurasi</span>
+                            <span id="cert-score-val" class="text-xs font-bold text-emerald-400">1500 (100%)</span>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 cert-bg-subtle">
+                            <span class="text-[9px] text-slate-400 uppercase block font-sans font-bold">Gelar / Predikat</span>
+                            <span id="cert-rank-val" class="text-xs font-bold text-amber-300">Grandmaster 4-Bit</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Certificate Footer & Stamp Section -->
+                    <div class="pt-4 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 border-t border-slate-800/80 gap-4">
+                        
+                        <!-- Left: Date & Serial -->
+                        <div class="text-center sm:text-left space-y-1 font-mono text-[11px]">
+                            <div>Tanggal: <span id="cert-date-val" class="text-slate-200 font-semibold">30 Oktober 2026</span></div>
+                            <div>No. Sertifikat: <span id="cert-serial-val" class="text-slate-400">BQ-2026-X8923</span></div>
+                        </div>
+
+                        <!-- Center: Gold Seal Icon -->
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-500 p-0.5 shadow-lg shadow-amber-500/20 flex items-center justify-center">
+                            <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center text-amber-400 text-center p-1 border border-amber-300">
+                                <i class="fa-solid fa-certificate text-lg"></i>
+                                <span class="text-[7px] font-bold uppercase tracking-tighter text-amber-300">TERVERIFIKASI</span>
+                            </div>
+                        </div>
+
+                        <!-- Right: Signature Line -->
+                        <div class="text-center space-y-1">
+                            <div class="font-serif italic text-amber-300 font-extrabold text-sm cert-gold-text">BinerQuest System</div>
+                            <div class="w-32 h-0.5 bg-slate-700 mx-auto cert-signature-line"></div>
+                            <div class="text-[10px] text-slate-400">Sistem Penguji Otomatis</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL 2: CONCEPT GUIDE & INSTRUCTIONS -->
+    <div id="modal-help" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-brand-card border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-lg text-cyan-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Petunjuk Kuis Biner 4-Bit</span>
+                </h3>
+                <button onclick="toggleModal('modal-help', false)" class="text-slate-400 hover:text-slate-100 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <p><strong class="text-slate-100">Prinsip Biner 4-Bit:</strong> Setiap posisi bit dari <span class="text-cyan-400 font-mono">kiri ke kanan</span> memiliki nilai posisi berbasis eksponen 2 (2³, 2², 2¹, 2⁰):</p>
+                
+                <div class="grid grid-cols-4 gap-1.5 text-center font-mono my-2">
+                    <div class="bg-slate-950 p-2 rounded-xl border border-slate-800">
+                        <div class="text-cyan-400 font-bold">Bit 4</div>
+                        <div class="text-slate-400 text-[11px] mt-0.5">= 8</div>
+                    </div>
+                    <div class="bg-slate-950 p-2 rounded-xl border border-slate-800">
+                        <div class="text-cyan-400 font-bold">Bit 3</div>
+                        <div class="text-slate-400 text-[11px] mt-0.5">= 4</div>
+                    </div>
+                    <div class="bg-slate-950 p-2 rounded-xl border border-slate-800">
+                        <div class="text-cyan-400 font-bold">Bit 2</div>
+                        <div class="text-slate-400 text-[11px] mt-0.5">= 2</div>
+                    </div>
+                    <div class="bg-slate-950 p-2 rounded-xl border border-slate-800">
+                        <div class="text-cyan-400 font-bold">Bit 1</div>
+                        <div class="text-slate-400 text-[11px] mt-0.5">= 1</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80 space-y-1.5 font-mono text-xs">
+                    <p class="text-emerald-400 font-semibold">Contoh Konversi:</p>
+                    <p><span class="text-cyan-400">1 0 1 1</span> = (1×8) + (0×4) + (1×2) + (1×1)</p>
+                    <p class="text-right text-slate-100 font-bold">= 8 + 0 + 2 + 1 = <span class="text-amber-400">11</span></p>
+                </div>
+
+                <p class="text-amber-300/90 text-xs italic bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                    ⚠️ <strong>Perhatian:</strong> Selama permainan, label bantuan (8, 4, 2, 1) sengaja disembunyikan untuk menguji kecepatan ingatan Anda!
+                </p>
+            </div>
+
+            <button onclick="toggleModal('modal-help', false)" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold rounded-xl text-sm transition-all">
+                Mengerti, Siap Main!
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT GAME ENGINE -->
+    <script>
+        // ==========================================
+        // GAME CONFIGURATION & GLOBAL STATE
+        // ==========================================
+        const state = {
+            // Player Config
+            playerName: "Pejuang Biner",
+            selectedMode: 'bin2dec', // 'bin2dec' | 'dec2bin' | 'mixed'
+            timerLimit: 10,          // seconds per question
+
+            // Session State
+            totalQuestions: 15,
+            currentQIndex: 0,
+            score: 0,
+            streak: 0,
+            bestStreakInSession: 0,
+            
+            // Current Question Data
+            currentType: 'bin2dec',
+            targetDec: 0,
+            targetBin: [0,0,0,0],
+            
+            // User Inputs
+            userDecInput: '',
+            userBits: [0,0,0,0],
+
+            // Question Timer
+            timerSecondsLeft: 10,
+            timerInterval: null,
+            questionStartTime: 0,
+
+            // History Log (15 items)
+            history: [],
+
+            // Audio
+            soundEnabled: true,
+
+            // LocalStorage High Scores
+            stats: {
+                highScore: parseInt(localStorage.getItem('bq_high_score') || '0'),
+                highStreak: parseInt(localStorage.getItem('bq_high_streak') || '0'),
+                sessionsPlayed: parseInt(localStorage.getItem('bq_sessions_played') || '0')
+            }
+        };
+
+        // ==========================================
+        // WEB AUDIO API SYNTHESIZER
+        // ==========================================
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(300, now + 0.04);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                } 
+                else if (type === 'correct') {
+                    const freqs = [523.25, 659.25, 783.99]; // C5, E5, G5
+                    freqs.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        const startTime = now + (idx * 0.05);
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, startTime);
+                        gain.gain.setValueAtTime(0.18, startTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(startTime);
+                        osc.stop(startTime + 0.22);
+                    });
+                } 
+                else if (type === 'wrong') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.linearRampToValueAtTime(80, now + 0.25);
+                    gain.gain.setValueAtTime(0.22, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+                else if (type === 'toggle') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(450, now);
+                    osc.frequency.exponentialRampToValueAtTime(850, now + 0.04);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                }
+                else if (type === 'tick') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(800, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.03);
+                }
+                else if (type === 'fanfare') {
+                    const freqs = [523.25, 659.25, 783.99, 1046.50];
+                    freqs.forEach((freq) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now);
+                        gain.gain.setValueAtTime(0.15, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.6);
+                    });
+                }
+            } catch (e) {
+                console.warn('Audio error:', e);
+            }
+        }
+
+        function toggleSound() {
+            state.soundEnabled = !state.soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            if (state.soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-cyan-400';
+                playSound('click');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+            }
+        }
+
+        // ==========================================
+        // INITIALIZATION & MENU LOGIC
+        // ==========================================
+        window.onload = function() {
+            updateStartStatsUI();
+            window.addEventListener('keydown', handleKeyboardInput);
+        };
+
+        function updateStartStatsUI() {
+            document.getElementById('start-high-score').textContent = state.stats.highScore;
+            document.getElementById('start-high-streak').textContent = state.stats.highStreak;
+            document.getElementById('start-sessions-played').textContent = state.stats.sessionsPlayed;
+        }
+
+        function selectMode(mode) {
+            playSound('click');
+            state.selectedMode = mode;
+            
+            const btns = {
+                bin2dec: document.getElementById('mode-btn-bin2dec'),
+                dec2bin: document.getElementById('mode-btn-dec2bin'),
+                mixed: document.getElementById('mode-btn-mixed')
+            };
+
+            Object.keys(btns).forEach(m => {
+                if (m === mode) {
+                    btns[m].className = 'mode-select-btn p-3.5 rounded-2xl border-2 border-cyan-500 bg-slate-900 text-left transition-all duration-200 relative glow-cyan';
+                } else {
+                    btns[m].className = 'mode-select-btn p-3.5 rounded-2xl border-2 border-slate-800 bg-slate-950/60 text-left transition-all duration-200 hover:border-slate-700 relative';
+                }
+            });
+        }
+
+        function selectTimerLimit(seconds) {
+            playSound('click');
+            state.timerLimit = seconds;
+            [5, 10, 15].forEach(s => {
+                const btn = document.getElementById(`timer-btn-${s}`);
+                if (s === seconds) {
+                    btn.className = 'timer-select-btn px-3.5 py-2 rounded-xl border-2 border-cyan-500 bg-slate-900 text-xs font-bold text-cyan-400 transition-all';
+                } else {
+                    btn.className = 'timer-select-btn px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-300 hover:border-slate-700 transition-all';
+                }
+            });
+        }
+
+        function goToStartScreen() {
+            playSound('click');
+            stopTimer();
+            document.getElementById('screen-start').classList.remove('hidden');
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-summary').classList.add('hidden');
+            updateStartStatsUI();
+        }
+
+        // ==========================================
+        // GAMEPLAY SESSION ENGINE (15 QUESTIONS)
+        // ==========================================
+        function startSession() {
+            playSound('click');
+            
+            // Get player name from input
+            const nameInput = document.getElementById('player-name-input').value.trim();
+            state.playerName = nameInput !== '' ? nameInput : 'Pejuang Biner';
+
+            // Reset Session
+            state.currentQIndex = 0;
+            state.score = 0;
+            state.streak = 0;
+            state.bestStreakInSession = 0;
+            state.history = [];
+
+            // Switch Screen
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-summary').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+
+            loadNextQuestion();
+        }
+
+        function loadNextQuestion() {
+            if (state.currentQIndex >= state.totalQuestions) {
+                finishSession();
+                return;
+            }
+
+            // Determine question type for this step
+            if (state.selectedMode === 'mixed') {
+                state.currentType = Math.random() < 0.5 ? 'bin2dec' : 'dec2bin';
+            } else {
+                state.currentType = state.selectedMode;
+            }
+
+            // Generate Random Target Number (0-15)
+            let randDec;
+            do {
+                randDec = Math.floor(Math.random() * 16);
+            } while (randDec === state.targetDec && Math.random() < 0.8);
+
+            state.targetDec = randDec;
+            const binStr = randDec.toString(2).padStart(4, '0');
+            state.targetBin = binStr.split('').map(Number);
+
+            // Reset inputs
+            state.userDecInput = '';
+            state.userBits = [0,0,0,0];
+
+            document.getElementById('feedback-card').classList.add('hidden');
+
+            renderQuestionUI();
+            startQuestionTimer();
+        }
+
+        function renderQuestionUI() {
+            document.getElementById('game-q-num').textContent = state.currentQIndex + 1;
+            document.getElementById('game-score').textContent = state.score;
+            document.getElementById('game-streak').textContent = state.streak;
+
+            const badgeLabel = document.getElementById('mode-badge-label');
+            const puzzleBin = document.getElementById('puzzle-bin2dec');
+            const puzzleDec = document.getElementById('puzzle-dec2bin');
+
+            if (state.currentType === 'bin2dec') {
+                badgeLabel.textContent = 'Biner ➔ Desimal';
+                puzzleBin.classList.remove('hidden');
+                puzzleDec.classList.add('hidden');
+
+                const boxes = document.querySelectorAll('#binary-display-boxes .bit-box');
+                boxes.forEach((box, i) => {
+                    box.textContent = state.targetBin[i];
+                    box.className = 'bit-box w-14 h-20 sm:w-16 sm:h-22 bg-slate-950 border-2 border-cyan-500/70 rounded-2xl flex items-center justify-center text-3xl font-bold font-mono text-cyan-400 shadow-inner animate-pop';
+                });
+                updateNumpadDisplay();
+            } else {
+                badgeLabel.textContent = 'Desimal ➔ Biner';
+                puzzleDec.classList.remove('hidden');
+                puzzleBin.classList.add('hidden');
+
+                const decDisplay = document.getElementById('target-dec-display');
+                decDisplay.textContent = state.targetDec;
+                decDisplay.classList.remove('animate-pop');
+                void decDisplay.offsetWidth; // Reflow
+                decDisplay.classList.add('animate-pop');
+
+                updateBitSwitchesUI();
+            }
+        }
+
+        // ==========================================
+        // COUNTDOWN TIMER LOGIC
+        // ==========================================
+        function startQuestionTimer() {
+            stopTimer();
+            state.timerSecondsLeft = state.timerLimit;
+            state.questionStartTime = Date.now();
+            updateTimerUI();
+
+            const intervalMs = 50;
+            state.timerInterval = setInterval(() => {
+                const elapsed = (Date.now() - state.questionStartTime) / 1000;
+                state.timerSecondsLeft = Math.max(0, state.timerLimit - elapsed);
+                
+                updateTimerUI();
+
+                if (state.timerSecondsLeft <= 3 && Math.floor(state.timerSecondsLeft * 10) % 10 === 0) {
+                    playSound('tick');
+                }
+
+                if (state.timerSecondsLeft <= 0) {
+                    stopTimer();
+                    handleAnswer(null, 'TIMEOUT');
+                }
+            }, intervalMs);
+        }
+
+        function stopTimer() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+                state.timerInterval = null;
+            }
+        }
+
+        function updateTimerUI() {
+            const timeText = document.getElementById('timer-text');
+            const progressBar = document.getElementById('timer-progress-bar');
+            
+            const seconds = state.timerSecondsLeft.toFixed(1);
+            timeText.textContent = `${seconds}s`;
+
+            const pct = (state.timerSecondsLeft / state.timerLimit) * 100;
+            progressBar.style.width = `${pct}%`;
+
+            if (state.timerSecondsLeft <= 3) {
+                progressBar.className = 'h-full bg-rose-500 transition-all duration-75 ease-linear';
+                timeText.className = 'font-extrabold text-sm text-rose-500 animate-pulse';
+            } else if (state.timerSecondsLeft <= (state.timerLimit / 2)) {
+                progressBar.className = 'h-full bg-amber-400 transition-all duration-75 ease-linear';
+                timeText.className = 'font-extrabold text-sm text-amber-400';
+            } else {
+                progressBar.className = 'h-full bg-cyan-400 transition-all duration-75 ease-linear';
+                timeText.className = 'font-extrabold text-sm text-cyan-400';
+            }
+        }
+
+        // ==========================================
+        // USER INPUT HANDLING
+        // ==========================================
+        function pressNumpad(val) {
+            playSound('click');
+            if (val === 'DEL') {
+                state.userDecInput = state.userDecInput.slice(0, -1);
+            } else {
+                if (state.userDecInput.length < 2) {
+                    const potential = state.userDecInput + val;
+                    if (parseInt(potential, 10) <= 15) {
+                        state.userDecInput = potential;
+                    }
+                }
+            }
+            updateNumpadDisplay();
+        }
+
+        function updateNumpadDisplay() {
+            const display = document.getElementById('dec-input-display');
+            if (state.userDecInput === '') {
+                display.innerHTML = `<span class="text-slate-600 font-normal text-sm">Ketik Angka (0-15)</span>`;
+            } else {
+                display.textContent = state.userDecInput;
+            }
+        }
+
+        function handleKeyboardInput(e) {
+            if (document.getElementById('screen-game').classList.contains('hidden')) return;
+
+            if (state.currentType === 'bin2dec') {
+                if (e.key >= '0' && e.key <= '9') {
+                    pressNumpad(e.key);
+                } else if (e.key === 'Backspace') {
+                    pressNumpad('DEL');
+                } else if (e.key === 'Enter') {
+                    submitBin2Dec();
+                }
+            } else if (state.currentType === 'dec2bin') {
+                if (e.key === 'Enter') {
+                    submitDec2Bin();
+                }
+            }
+        }
+
+        function submitBin2Dec() {
+            if (state.userDecInput === '') return;
+            const userVal = parseInt(state.userDecInput, 10);
+            handleAnswer(userVal, 'USER');
+        }
+
+        function toggleBit(index) {
+            playSound('toggle');
+            state.userBits[index] = state.userBits[index] === 0 ? 1 : 0;
+            updateBitSwitchesUI();
+        }
+
+        function updateBitSwitchesUI() {
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`bit-btn-${i}`);
+                const valSpan = btn.querySelector('.bit-val');
+                const isOne = state.userBits[i] === 1;
+
+                valSpan.textContent = state.userBits[i];
+
+                if (isOne) {
+                    btn.className = 'bit-switch h-20 sm:h-24 bg-gradient-to-b from-cyan-950 to-slate-950 border-2 border-cyan-400 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 glow-cyan';
+                    valSpan.className = 'bit-val text-3xl font-black font-mono text-cyan-400 animate-pop';
+                } else {
+                    btn.className = 'bit-switch h-20 sm:h-24 bg-slate-950 border-2 border-slate-800 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 group';
+                    valSpan.className = 'bit-val text-3xl font-extrabold font-mono text-slate-600 group-hover:text-slate-400';
+                }
+            }
+        }
+
+        function submitDec2Bin() {
+            const userBinStr = state.userBits.join('');
+            handleAnswer(userBinStr, 'USER');
+        }
+
+        // ==========================================
+        // ANSWER EVALUATION
+        // ==========================================
+        function handleAnswer(userVal, cause) {
+            stopTimer();
+            const timeTaken = Math.min(state.timerLimit, ((Date.now() - state.questionStartTime) / 1000)).toFixed(1);
+
+            let isCorrect = false;
+            let playerAnsText = '';
+            let correctAnsText = '';
+
+            if (state.currentType === 'bin2dec') {
+                correctAnsText = state.targetDec.toString();
+                if (cause === 'TIMEOUT') {
+                    playerAnsText = 'Waktu Habis ⏱️';
+                } else {
+                    playerAnsText = userVal.toString();
+                    isCorrect = (userVal === state.targetDec);
+                }
+            } else {
+                correctAnsText = state.targetBin.join('');
+                if (cause === 'TIMEOUT') {
+                    playerAnsText = 'Waktu Habis ⏱️';
+                } else {
+                    playerAnsText = userVal;
+                    isCorrect = (userVal === correctAnsText);
+                }
+            }
+
+            state.history.push({
+                qNum: state.currentQIndex + 1,
+                type: state.currentType,
+                questionDisplay: state.currentType === 'bin2dec' ? state.targetBin.join('') : state.targetDec.toString(),
+                userAnswer: playerAnsText,
+                correctAnswer: correctAnsText,
+                isCorrect: isCorrect,
+                timeSpent: parseFloat(timeTaken)
+            });
+
+            const card = document.getElementById('game-card');
+
+            if (isCorrect) {
+                playSound('correct');
+                state.score += 100 + Math.round(state.timerSecondsLeft * 10) + (state.streak * 20);
+                state.streak++;
+                if (state.streak > state.bestStreakInSession) {
+                    state.bestStreakInSession = state.streak;
+                }
+
+                card.classList.add('glow-emerald', 'border-emerald-500');
+                setTimeout(() => {
+                    card.classList.remove('glow-emerald', 'border-emerald-500');
+                    state.currentQIndex++;
+                    loadNextQuestion();
+                }, 400);
+
+            } else {
+                playSound('wrong');
+                state.streak = 0;
+
+                card.classList.add('animate-shake', 'glow-rose', 'border-rose-500');
+                setTimeout(() => {
+                    card.classList.remove('animate-shake', 'glow-rose', 'border-rose-500');
+                }, 450);
+
+                showFeedbackCard(cause, playerAnsText, correctAnsText);
+
+                setTimeout(() => {
+                    state.currentQIndex++;
+                    loadNextQuestion();
+                }, 1700);
+            }
+        }
+
+        function showFeedbackCard(cause, playerAns, correctAns) {
+            const card = document.getElementById('feedback-card');
+            const title = document.getElementById('feedback-title');
+            const text = document.getElementById('feedback-text');
+
+            if (cause === 'TIMEOUT') {
+                title.innerHTML = `<i class="fa-solid fa-hourglass-end text-rose-400"></i><span>Waktu Habis!</span>`;
+            } else {
+                title.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400"></i><span>Jawaban Salah</span>`;
+            }
+
+            if (state.currentType === 'bin2dec') {
+                text.innerHTML = `Biner <span class="text-cyan-400 font-bold">${state.targetBin.join('')}</span> = <span class="text-emerald-400 font-bold">${correctAns}</span><br>` +
+                    `<span class="text-slate-400 text-[11px]">(8×${state.targetBin[0]} + 4×${state.targetBin[1]} + 2×${state.targetBin[2]} + 1×${state.targetBin[3]})</span>`;
+            } else {
+                text.innerHTML = `Desimal <span class="text-emerald-400 font-bold">${state.targetDec}</span> dalam biner = <span class="text-cyan-400 font-bold">${correctAns}</span>`;
+            }
+
+            card.classList.remove('hidden');
+        }
+
+        // ==========================================
+        // SUMMARY & RESULTS ENGINE
+        // ==========================================
+        function finishSession() {
+            stopTimer();
+            playSound('fanfare');
+
+            // High Score Persistence
+            state.stats.sessionsPlayed++;
+            if (state.score > state.stats.highScore) {
+                state.stats.highScore = state.score;
+            }
+            if (state.bestStreakInSession > state.stats.highStreak) {
+                state.stats.highStreak = state.bestStreakInSession;
+            }
+
+            localStorage.setItem('bq_high_score', state.stats.highScore.toString());
+            localStorage.setItem('bq_high_streak', state.stats.highStreak.toString());
+            localStorage.setItem('bq_sessions_played', state.stats.sessionsPlayed.toString());
+
+            // Metrics
+            const correctCount = state.history.filter(h => h.isCorrect).length;
+            const accuracy = Math.round((correctCount / state.totalQuestions) * 100);
+            const totalTimeSpent = state.history.reduce((acc, curr) => acc + curr.timeSpent, 0);
+            const avgTime = (totalTimeSpent / state.totalQuestions).toFixed(1);
+
+            // Render Header & Player Name
+            document.getElementById('summary-player-name').textContent = state.playerName;
+            document.getElementById('sum-score').textContent = state.score;
+            document.getElementById('sum-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('sum-correct-count').textContent = `${correctCount} dari 15`;
+            document.getElementById('sum-avg-time').textContent = `${avgTime}s`;
+            document.getElementById('sum-best-streak').textContent = state.bestStreakInSession;
+
+            // Render Breakdown Table
+            const tbody = document.getElementById('summary-table-body');
+            tbody.innerHTML = '';
+
+            state.history.forEach((row) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/50 transition-colors';
+
+                const typeText = row.type === 'bin2dec' ? 'Bin➔Dec' : 'Dec➔Bin';
+
+                tr.innerHTML = `
+                    <td class="py-2.5 px-2 font-bold text-slate-400">${row.qNum}</td>
+                    <td class="py-2.5 px-2 text-slate-400 text-[11px]">${typeText}</td>
+                    <td class="py-2.5 px-2 font-bold text-cyan-400">${row.questionDisplay}</td>
+                    <td class="py-2.5 px-2 font-bold ${row.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">${row.userAnswer}</td>
+                    <td class="py-2.5 px-2 font-bold text-slate-200">${row.correctAnswer}</td>
+                    <td class="py-2.5 px-2 text-right font-mono text-slate-400">${row.timeSpent}s</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Switch Screen
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-summary').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // CERTIFICATE SYSTEM
+        // ==========================================
+        function getRankTitle(accuracy) {
+            if (accuracy === 100) return "Grandmaster 4-Bit";
+            if (accuracy >= 80) return "Ahli Biner Digital";
+            if (accuracy >= 60) return "Prajurit Biner";
+            return "Kadet Biner";
+        }
+
+        function getModeTitle(modeKey) {
+            if (modeKey === 'bin2dec') return "Biner ➔ Desimal";
+            if (modeKey === 'dec2bin') return "Desimal ➔ Biner";
+            return "Mode Campuran (Mix)";
+        }
+
+        function openCertificateModal() {
+            playSound('click');
+
+            const correctCount = state.history.filter(h => h.isCorrect).length;
+            const accuracy = Math.round((correctCount / state.totalQuestions) * 100);
+            const rankTitle = getRankTitle(accuracy);
+            const modeName = getModeTitle(state.selectedMode);
+
+            // Populate Certificate Elements
+            document.getElementById('cert-display-name').textContent = state.playerName;
+            document.getElementById('cert-name-editor').value = state.playerName;
+            
+            document.getElementById('cert-mode-val').textContent = modeName;
+            document.getElementById('cert-timer-val').textContent = `${state.timerLimit} Detik / Soal`;
+            document.getElementById('cert-score-val').textContent = `${state.score} (${accuracy}%)`;
+            document.getElementById('cert-rank-val').textContent = rankTitle;
+
+            // Date & Serial Formatting
+            const now = new Date();
+            const dateOptions = { day: 'numeric', month: 'Long', year: 'numeric' };
+            const formattedDate = now.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('cert-date-val').textContent = formattedDate;
+
+            // Generate unique serial code
+            const randomCode = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('cert-serial-val').textContent = `BQ-${now.getFullYear()}-X${randomCode}`;
+
+            // Show Certificate Modal
+            toggleModal('modal-certificate', true);
+        }
+
+        function updateCertificateName(newName) {
+            const trimmed = newName.trim();
+            const displayName = trimmed !== '' ? trimmed : 'Pejuang Biner';
+            document.getElementById('cert-display-name').textContent = displayName;
+            state.playerName = displayName;
+        }
+
+        function printCertificate() {
+            playSound('click');
+            window.print();
+        }
+
+        // ==========================================
+        // MODAL HELPERS
+        // ==========================================
+        function toggleModal(modalId, show) {
+            playSound('click');
+            const modal = document.getElementById(modalId);
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
